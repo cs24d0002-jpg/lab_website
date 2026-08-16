@@ -1,0 +1,12 @@
+lab_website
+tsserver
+npm init -y
+npm install -D typescript @types/node tsx
+npx tsc --init
+npm i -D @types/node
+npm install cors
+npm install -D @types/cors
+
+client
+npm install -g @angular/cli
+ng new client --defaults
