@@ -10,3 +10,7 @@ npm install -D @types/cors
 client
 npm install -g @angular/cli
 ng new client --defaults
+
+To Create a new component
+ng generate component features/faculties
+

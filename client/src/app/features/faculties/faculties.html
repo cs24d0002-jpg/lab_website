@@ -1,0 +1,57 @@
+<div class="faculties-page">
+  <header class="page-header">
+    <div class="container">
+      <span class="badge">TADS Lab Leadership</span>
+      <h1>Faculty Members</h1>
+      <p>Guiding research across Theoretical Computer Science, Data Science, and Membrane Computing at IIITDM Kancheepuram.</p>
+    </div>
+  </header>
+
+  <main class="container section">
+    <div class="faculty-grid">
+      @for (faculty of faculties; track faculty.email) {
+        <div class="faculty-card">
+          <div class="card-header">
+            <!-- <div class="avatar-wrapper">
+              <img 
+                [src]="faculty.avatar" 
+                [alt]="faculty.name" 
+                class="faculty-avatar"
+                (error)="handleImageError($event)" />
+            </div> -->
+            <div class="header-details">
+              <h2>{{ faculty.name }}</h2>
+              <span class="designation">{{ faculty.designation }}</span>
+              <a [href]="'mailto:' + faculty.email" class="email-link">
+                ✉️ {{ faculty.email }}
+              </a>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <p class="bio">{{ faculty.bio }}</p>
+
+            <div class="interests-section">
+              <h4>Research Focus</h4>
+              <div class="tag-container">
+                @for (tag of faculty.researchInterests; track tag) {
+                  <span class="interest-tag">{{ tag }}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <a 
+              [href]="faculty.profileUrl" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="profile-btn">
+              View Official IIITDM Profile ↗
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </main>
+</div>

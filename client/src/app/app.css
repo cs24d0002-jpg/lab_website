@@ -1,84 +1,163 @@
+:root {
+  --primary: #0284c7;
+  --primary-dark: #0369a1;
+  --secondary: #0f172a;
+  --accent: #38bdf8;
+  --bg-header: rgba(255, 255, 255, 0.92);
+  --border-light: #e2e8f0;
+}
+
+/* Glassmorphic Sticky Header */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  background-color: #0f172a;
-  color: #fff;
-  flex-wrap: wrap;
-  gap: 1rem;
+  padding: 0.75rem 2rem;
+  background: var(--bg-header);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.05);
 }
 
-.brand h2 { 
-  margin: 0; 
-  font-size: 1.3rem; 
+/* Brand Section */
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
 }
 
-.nav-tabs { 
-  display: flex; 
-  gap: 0.5rem; 
-  align-items: center; 
-  flex-wrap: wrap;
+.institute-logo {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--secondary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.lab-subtitle {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+/* Navigation Links */
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav-tabs a {
-  color: #94a3b8;
+  position: relative;
+  padding: 0.55rem 0.9rem;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.92rem;
   text-decoration: none;
-  padding: 0.4rem 0.7rem;
   border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
-.nav-tabs a:hover { 
-  color: #f8fafc; 
-  background: #1e293b; 
+.nav-tabs a:hover {
+  color: var(--primary);
+  background-color: #f1f5f9;
 }
 
-.nav-tabs a.active { 
-  color: #38bdf8; 
-  background: #1e293b; 
-  font-weight: 600; 
+.nav-tabs a.active {
+  color: var(--primary);
+  background-color: #e0f2fe;
 }
 
+/* AI GATE Highlight Button */
+.highlight-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ai-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0284c7, #6366f1);
+  color: #ffffff;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+/* Login Action Button */
+/* .login-btn {
+  margin-left: 0.5rem;
+  background-color: var(--secondary) !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  padding: 0.55rem 1.1rem !important;
+}
+
+.login-btn:hover {
+  background-color: #1e293b !important;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+}
+
+.login-btn.active {
+  background-color: var(--primary) !important;
+} */
+/* --- High-Visibility Login Button Fix --- */
 .nav-tabs a.login-btn {
-  border: 1px solid #38bdf8;
-  color: #38bdf8;
-  margin-left: 0.25rem;
+  background-color: #0284c7 !important; /* Solid primary blue background */
+  color: #ffffff !important;            /* Crisp white text for clear visibility */
+  border: 1px solid #0284c7;
+  font-weight: 700;
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  margin-left: 0.75rem;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+  transition: all 0.2s ease-in-out;
 }
 
 .nav-tabs a.login-btn:hover {
-  background-color: #38bdf8;
-  color: #0f172a;
+  background-color: #0369a1 !important; /* Darker blue on hover */
+  border-color: #0369a1;
+  color: #ffffff !important;
+  box-shadow: 0 4px 8px rgba(2, 132, 199, 0.3);
 }
 
+.nav-tabs a.login-btn.active {
+  background-color: #0f172a !important; /* Dark slate when on the login route */
+  border-color: #0f172a;
+  color: #ffffff !important;
+}
+/* Main Content Wrapper */
 .content {
-  max-width: 1100px;
-  margin: 1.5rem auto;
-  padding: 0 1rem;
+  min-height: calc(100vh - 70px);
 }
 
-/* Mobile Breakpoint */
-@media (max-width: 640px) {
+/* Responsive Collapse Handling */
+@media (max-width: 900px) {
   .navbar {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
   }
-
   .nav-tabs {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 0.4rem;
-  }
-
-  .nav-tabs a {
-    font-size: 0.85rem;
-    padding: 0.35rem 0.6rem;
-  }
-
-  .nav-tabs a.login-btn {
-    margin-left: 0;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

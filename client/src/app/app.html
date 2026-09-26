@@ -1,14 +1,31 @@
 <header class="navbar">
   <div class="brand">
-    <h2>TADS Lab</h2>
+    <a routerLink="/" class="brand-link">
+      <!-- IIITDM Kancheepuram Official Institutional Badge -->
+      <img 
+        src="https://www.iiitdm.ac.in/docs/BrandBook.pdf" 
+        alt="IIITDM Kancheepuram Logo" 
+        class="institute-logo"
+        onerror="this.style.display='none'" />
+      
+      <div class="brand-text">
+        <span class="lab-title">TADS LAB</span>
+        <span class="lab-subtitle">Lab L610 • IIITDM Kancheepuram</span>
+      </div>
+    </a>
   </div>
+
   <nav class="nav-tabs">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
     <a routerLink="/faculties" routerLinkActive="active">Faculties</a>
     <a routerLink="/students" routerLinkActive="active">Students</a>
     <a routerLink="/publications" routerLinkActive="active">Publications</a>
     <a routerLink="/projects" routerLinkActive="active">Projects</a>
-    <a routerLink="/gate-prep" routerLinkActive="active">GATE Preparation</a>
-    <a routerLink="/login" routerLinkActive="active" class="login-btn">Login</a>
+    <a routerLink="/courses" routerLinkActive="active">Courses</a>
+    <a routerLink="/gate-prep" routerLinkActive="active" class="highlight-tab">
+      <span class="ai-badge">AI</span> GATE Prep
+    </a>
+    <a routerLink="/login" routerLinkActive="active" class="login-btn">Portal Sign In</a>
   </nav>
 </header>
 

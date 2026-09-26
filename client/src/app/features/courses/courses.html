@@ -1,0 +1,81 @@
+<div class="courses-page">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="container">
+      <span class="badge">Academic Resources</span>
+      <h1>Faculty Courses & Learning Repository</h1>
+      <p>Access lecture slides, tutorial sheets, assignments, student scribes, and previous year question papers offered by TADS Lab faculty.</p>
+    </div>
+  </header>
+
+  <main class="container section">
+    <!-- Filter Bar & Search -->
+    <div class="filter-wrapper">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="Search materials (e.g., Dynamic Programming, PYQ, Scribe)..." 
+          [ngModel]="searchQuery()" 
+          (ngModelChange)="searchQuery.set($event)" />
+      </div>
+
+      <div class="material-tabs">
+        <button [class.active]="selectedCategory() === 'All'" (click)="setCategory('All')">All</button>
+        <button [class.active]="selectedCategory() === 'Slides'" (click)="setCategory('Slides')">Slides</button>
+        <button [class.active]="selectedCategory() === 'Assignment'" (click)="setCategory('Assignment')">Assignments</button>
+        <button [class.active]="selectedCategory() === 'Tutorial'" (click)="setCategory('Tutorial')">Tutorials</button>
+        <button [class.active]="selectedCategory() === 'Scribe'" (click)="setCategory('Scribe')">Scribes</button>
+        <button [class.active]="selectedCategory() === 'PYQ'" (click)="setCategory('PYQ')">PYQs</button>
+      </div>
+    </div>
+
+    <!-- Courses Accordion / List -->
+    <div class="courses-list">
+      @for (course of courses(); track course.code) {
+        <div class="course-card" [class.expanded]="expandedCourseCode() === course.code">
+          <!-- Course Card Header -->
+          <div class="course-header" (click)="toggleCourse(course.code)">
+            <div class="header-left">
+              <span class="course-code">{{ course.code }}</span>
+              <div>
+                <h2>{{ course.name }}</h2>
+                <p class="instructor">Instructor: <strong>{{ course.instructor }}</strong> • {{ course.semester }} ({{ course.academicYear }})</p>
+              </div>
+            </div>
+            <div class="header-right">
+              <span class="count-badge">{{ getFilteredMaterials(course.materials).length }} Items</span>
+              <span class="toggle-icon">{{ expandedCourseCode() === course.code ? '▲' : '▼' }}</span>
+            </div>
+          </div>
+
+          <!-- Course Card Body (Accordion Content) -->
+          @if (expandedCourseCode() === course.code) {
+            <div class="course-body">
+              <p class="description">{{ course.description }}</p>
+
+              <div class="materials-grid">
+                @for (material of getFilteredMaterials(course.materials); track material.id) {
+                  <div class="material-card">
+                    <div class="material-type-badge" [ngClass]="material.type.toLowerCase()">
+                      {{ material.type }}
+                    </div>
+                    <div class="material-details">
+                      <h4>{{ material.title }}</h4>
+                      <span class="meta">{{ material.uploadDate }} @if(material.fileSize){ • {{ material.fileSize }} }</span>
+                    </div>
+                    <a [href]="material.downloadUrl" class="download-btn" target="_blank">
+                      📥 Download
+                    </a>
+                  </div>
+                } @empty {
+                  <p class="no-materials">No materials found for the selected category or search query.</p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </main>
+</div>

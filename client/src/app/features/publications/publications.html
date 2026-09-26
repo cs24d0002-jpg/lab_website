@@ -1,0 +1,110 @@
+<div class="pubs-page">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <span class="badge">Research Output</span>
+      <h1>Publications & Intellectual Property</h1>
+      <p>Explore high-impact international conferences, indexed journal papers, and patents contributed by TADS Lab faculty and scholars.</p>
+    </div>
+  </header>
+
+  <main class="container section">
+    <!-- Three Divisions Selector Tabs -->
+    <div class="division-tabs">
+      <button 
+        [class.active]="activeDivision() === 'All'" 
+        (click)="setDivision('All')">
+        All Research ({{ publications().length }})
+      </button>
+
+      <button 
+        [class.active]="activeDivision() === 'Conferences'" 
+        (click)="setDivision('Conferences')">
+        🏛️ Conferences ({{ getCount('Conferences') }})
+      </button>
+
+      <button 
+        [class.active]="activeDivision() === 'Journals'" 
+        (click)="setDivision('Journals')">
+        📖 Journals ({{ getCount('Journals') }})
+      </button>
+
+      <button 
+        [class.active]="activeDivision() === 'Patents'" 
+        (click)="setDivision('Patents')">
+        📜 Patents ({{ getCount('Patents') }})
+      </button>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="controls-bar">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          placeholder="Search title, author, or venue..." 
+          [ngModel]="searchQuery()" 
+          (ngModelChange)="searchQuery.set($event)" />
+      </div>
+
+      <div class="year-select-wrapper">
+        <label for="yearSelect">Filter Year:</label>
+        <select id="yearSelect" [ngModel]="selectedYear()" (ngModelChange)="selectedYear.set($event)">
+          <option value="All">All Years</option>
+          @for (year of availableYears(); track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Publications List -->
+    <div class="pubs-list">
+      @for (pub of filteredPublications(); track pub.id) {
+        <div class="pub-card" [ngClass]="pub.type.toLowerCase()">
+          <div class="pub-header">
+            <div class="type-and-indexing">
+              <span class="type-tag" [ngClass]="pub.type.toLowerCase()">
+                {{ pub.type }}
+              </span>
+              @if (pub.indexing) {
+                <span class="indexing-badge">{{ pub.indexing }}</span>
+              }
+              @if (pub.status) {
+                <span class="status-badge" [ngClass]="pub.status.toLowerCase().replace(' ', '-')">
+                  {{ pub.status }}
+                </span>
+              }
+            </div>
+            <span class="pub-year">{{ pub.year }}</span>
+          </div>
+
+          <h3 class="pub-title">{{ pub.title }}</h3>
+
+          <div class="pub-authors">
+            👥 {{ pub.authors.join(', ') }}
+          </div>
+
+          <div class="pub-venue">
+            📍 <strong>{{ pub.venue }}</strong>
+            @if (pub.patentNumber) {
+              <span class="patent-num">({{ pub.patentNumber }})</span>
+            }
+          </div>
+
+          @if (pub.doiOrUrl) {
+            <div class="pub-actions">
+              <a [href]="pub.doiOrUrl" target="_blank" class="doi-link">
+                🔗 View Paper / DOI
+              </a>
+            </div>
+          }
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>No publication records found matching the selected criteria.</p>
+        </div>
+      }
+    </div>
+  </main>
+</div>
