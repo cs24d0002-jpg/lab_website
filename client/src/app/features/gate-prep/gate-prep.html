@@ -1,0 +1,41 @@
+<div class="gate-container">
+  @if (!selectedSubject()) {
+    <header class="gate-header">
+      <h1>GATE CS & IT Preparation</h1>
+      <p>Select a subject to access study notes, formulas, and practice problems.</p>
+    </header>
+
+    <div class="subject-grid">
+      @for (subject of subjects; track subject.id) {
+        <div class="subject-card" (click)="selectSubject(subject)">
+          <div class="card-header">
+            <span class="subject-icon">{{ subject.icon }}</span>
+            <span class="subject-badge">{{ subject.code }}</span>
+          </div>
+          <h3>{{ subject.name }}</h3>
+          <p class="topic-count">{{ subject.topicsCount }} Modules Available</p>
+          <div class="card-footer">
+            <span>Explore Materials →</span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <!-- Selected Subject Detail View -->
+    <div class="detail-view">
+      <button class="back-btn" (click)="clearSelection()">← Back to All Subjects</button>
+      
+      <div class="subject-banner">
+        <span class="banner-icon">{{ selectedSubject()?.icon }}</span>
+        <div>
+          <h2>{{ selectedSubject()?.name }}</h2>
+          <p>GATE CS Topic Modules & Learning Resources</p>
+        </div>
+      </div>
+
+      <div class="placeholder-content">
+        <p>📑 Study materials, lecture slides, and practice quizzes for <strong>{{ selectedSubject()?.name }}</strong> will be loaded here.</p>
+      </div>
+    </div>
+  }
+</div>

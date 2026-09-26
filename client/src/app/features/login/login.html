@@ -1,0 +1,121 @@
+<div class="auth-container">
+  <div class="auth-card">
+    
+    <!-- Tab Switcher -->
+    <div class="auth-tabs">
+      <button 
+        [class.active]="activeTab() === 'login'" 
+        (click)="switchTab('login')">
+        Sign In
+      </button>
+      <button 
+        [class.active]="activeTab() === 'register'" 
+        (click)="switchTab('register')">
+        Register
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    @if (activeTab() === 'login') {
+      <form (ngSubmit)="onLogin()" class="auth-form">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Access your research progress or GATE materials</p>
+
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input 
+            type="email" 
+            id="login-email" 
+            [(ngModel)]="loginData.email" 
+            name="loginEmail" 
+            placeholder="student@lab.edu" 
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            [(ngModel)]="loginData.password" 
+            name="loginPassword" 
+            placeholder="••••••••" 
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="login-role">Log in as</label>
+          <select id="login-role" [(ngModel)]="loginData.role" name="loginRole">
+            <option value="STUDENT">Student (Project / GATE)</option>
+            <option value="FACULTY">Faculty / Admin</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Sign In</button>
+      </form>
+    }
+
+    <!-- Register Form -->
+    @if (activeTab() === 'register') {
+      <form (ngSubmit)="onRegister()" class="auth-form">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join the lab portal as a student or researcher</p>
+
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input 
+            type="text" 
+            id="reg-name" 
+            [(ngModel)]="registerData.fullName" 
+            name="fullName" 
+            placeholder="John Doe" 
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input 
+            type="email" 
+            id="reg-email" 
+            [(ngModel)]="registerData.email" 
+            name="regEmail" 
+            placeholder="student@lab.edu" 
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-role">Role</label>
+          <select id="reg-role" [(ngModel)]="registerData.role" name="regRole">
+            <option value="PROJECT_STUDENT">Project Research Student</option>
+            <option value="GATE_STUDENT">GATE Prep Student</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input 
+            type="password" 
+            id="reg-password" 
+            [(ngModel)]="registerData.password" 
+            name="regPassword" 
+            placeholder="••••••••" 
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-confirm">Confirm Password</label>
+          <input 
+            type="password" 
+            id="reg-confirm" 
+            [(ngModel)]="registerData.confirmPassword" 
+            name="confirmPassword" 
+            placeholder="••••••••" 
+            required />
+        </div>
+
+        <button type="submit" class="submit-btn">Register Account</button>
+      </form>
+    }
+
+  </div>
+</div>
