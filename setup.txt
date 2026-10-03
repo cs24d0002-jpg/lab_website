@@ -1,3 +1,6 @@
+node version
+24.11.1
+
 lab_website
 tsserver
 npm init -y
@@ -7,6 +10,8 @@ npm i -D @types/node
 npm install cors
 npm install -D @types/cors
 
+
+
 client
 npm install -g @angular/cli
 ng new client --defaults
@@ -14,3 +19,15 @@ ng new client --defaults
 To Create a new component
 ng generate component features/faculties
 
+
+
+Postgres Installation
+1. Install Postgres
+sudo apt update
+sudo apt install -y postgresql postgresql-contrib
+
+2. Check the Status
+sudo systemctl status postgresql
+
+3. Start Postgres
+psql -U postgres -h localhost -d postgres
