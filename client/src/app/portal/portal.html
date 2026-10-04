@@ -1,0 +1,82 @@
+<div class="erp-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="erp-sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-logo">⚡</span>
+      <span class="brand-text">Enterprise ERP</span>
+    </div>
+
+    <nav class="sidebar-menu">
+      @for (module of modules; track module.id) {
+        <button 
+          class="menu-item" 
+          [class.active]="activeModule() === module.id"
+          (click)="selectModule(module.id)">
+          <span class="menu-icon">{{ module.icon }}</span>
+          <span class="menu-label">{{ module.name }}</span>
+        </button>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span>🚪</span>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Portal Content Wrapper -->
+  <div class="erp-main">
+    <!-- ERP Top Action Bar -->
+    <header class="erp-topbar">
+      <div class="topbar-search">
+        <input type="text" placeholder="Search modules, records, or entities..." />
+      </div>
+
+      <div class="topbar-actions">
+        <span class="notification-badge">🔔</span>
+        <div class="user-profile">
+          <div class="avatar">{{ user().name[0] }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ user().name }}</span>
+            <span class="user-role">{{ user().role }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Workspace Container -->
+    <main class="erp-workspace">
+      @if (activeModule() === 'dashboard') {
+        <div class="workspace-card">
+          <h2>Overview & Metrics</h2>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-title">Active Users</span>
+              <span class="metric-value">1,248</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-title">System Health</span>
+              <span class="metric-value status-good">99.9%</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-title">Encrypted Sessions</span>
+              <span class="metric-value">Active</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (activeModule() === 'gate-prep') {
+        <div class="workspace-card">
+          <h2>GATE CS & IT Module Workspace</h2>
+          <p>Integrated study environment for all 10 GATE subjects.</p>
+        </div>
+      }
+
+      <!-- Nested child routes can render here if using router-outlet -->
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

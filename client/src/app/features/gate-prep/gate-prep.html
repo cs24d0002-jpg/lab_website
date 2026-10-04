@@ -2,7 +2,7 @@
   @if (!selectedSubject()) {
     <header class="gate-header">
       <h1>GATE CS & IT Preparation</h1>
-      <p>Select a subject to access study notes, formulas, and practice problems.</p>
+      <p>Select a subject to access study notes, formulas, simulations, and practice questions.</p>
     </header>
 
     <div class="subject-grid">
@@ -13,15 +13,15 @@
             <span class="subject-badge">{{ subject.code }}</span>
           </div>
           <h3>{{ subject.name }}</h3>
-          <p class="topic-count">{{ subject.topicsCount }} Modules Available</p>
+          <p class="topic-count">{{ subject.subtopics.length }} Modules Available</p>
           <div class="card-footer">
-            <span>Explore Materials →</span>
+            <span>Explore Workspace →</span>
           </div>
         </div>
       }
     </div>
   } @else {
-    <!-- Selected Subject Detail View -->
+    <!-- Detail View -->
     <div class="detail-view">
       <button class="back-btn" (click)="clearSelection()">← Back to All Subjects</button>
       
@@ -29,13 +29,148 @@
         <span class="banner-icon">{{ selectedSubject()?.icon }}</span>
         <div>
           <h2>{{ selectedSubject()?.name }}</h2>
-          <p>GATE CS Topic Modules & Learning Resources</p>
+          <p>GATE Topic Modules & Interactive Learning Workspace</p>
         </div>
       </div>
 
-      <div class="placeholder-content">
-        <p>📑 Study materials, lecture slides, and practice quizzes for <strong>{{ selectedSubject()?.name }}</strong> will be loaded here.</p>
+      <!-- Subtopics Selector Grid -->
+      <div class="topics-section">
+        <h3>Select Broad Topic</h3>
+        <div class="subtopics-grid">
+          @for (subtopic of selectedSubject()?.subtopics; track subtopic.id) {
+            <div 
+              class="subtopic-card" 
+              [class.active]="selectedSubtopic()?.id === subtopic.id"
+              (click)="selectSubtopic(subtopic)">
+              <h4>{{ subtopic.title }}</h4>
+              <p class="subtopic-desc">{{ subtopic.description }}</p>
+              <div class="subtopic-footer">
+                <span>📝 {{ subtopic.pyqs.length }} Solved PYQs</span>
+                <span class="view-link">Open Workspace →</span>
+              </div>
+            </div>
+          }
+        </div>
       </div>
+
+      <!-- Active Interactive Module Workspace -->
+      @if (selectedSubtopic()) {
+        <div class="workspace-container">
+          <div class="workspace-header">
+            <h3>📌 {{ selectedSubtopic()?.title }}</h3>
+            
+            <!-- Navigation Tabs -->
+            <div class="workspace-tabs">
+              <button [class.active]="activeTab() === 'notes'" (click)="setTab('notes')">📄 Study Notes</button>
+              <button [class.active]="activeTab() === 'formulas'" (click)="setTab('formulas')">📐 Formula Cards</button>
+              <button [class.active]="activeTab() === 'simulations'" (click)="setTab('simulations')">🎮 Interactive Simulations</button>
+              <button [class.active]="activeTab() === 'pyqs'" (click)="setTab('pyqs')">✍️ Practice PYQs</button>
+            </div>
+          </div>
+
+          <div class="tab-content">
+            <!-- TAB 1: STUDY NOTES -->
+            @if (activeTab() === 'notes') {
+              <div class="notes-tab">
+                <div class="pdf-header">
+                  <span>PDF Study Material</span>
+                  @if (selectedSubtopic()?.notesPdfUrl) {
+                    <a [href]="selectedSubtopic()?.notesPdfUrl" target="_blank" class="download-link">📥 Download Full Notes PDF</a>
+                  }
+                </div>
+                <div class="notes-card-preview">
+                  <p>Comprehensive theory guide covering <strong>{{ selectedSubtopic()?.title }}</strong>.</p>
+                  <ul>
+                    <li>Complete conceptual walkthroughs and algorithmic logic.</li>
+                    <li>GATE exam tricks, edge cases, and shortcut formulas.</li>
+                    <li>Worked examples and previous gate problem analysis.</li>
+                  </ul>
+                </div>
+              </div>
+            }
+
+            <!-- TAB 2: FORMULA CARDS -->
+            @if (activeTab() === 'formulas') {
+              <div class="formulas-tab">
+                @if (selectedSubtopic()?.formulas?.length) {
+                  <div class="formula-grid">
+                    @for (item of selectedSubtopic()?.formulas; track item.title) {
+                      <div class="formula-card">
+                        <h4>{{ item.title }}</h4>
+                        <div class="formula-code">{{ item.formula }}</div>
+                        <p>{{ item.description }}</p>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p>No formula sheets added for this subtopic yet.</p>
+                }
+              </div>
+            }
+
+            <!-- TAB 3: INTERACTIVE SIMULATIONS -->
+            @if (activeTab() === 'simulations') {
+              <div class="simulations-tab">
+                @if (selectedSubtopic()?.simulations?.length) {
+                  <div class="simulation-grid">
+                    @for (sim of selectedSubtopic()?.simulations; track sim.title) {
+                      <div class="sim-card">
+                        <span class="sim-type">{{ sim.type | uppercase }}</span>
+                        <h4>{{ sim.title }}</h4>
+                        <p>{{ sim.description }}</p>
+                        <button class="sim-btn">{{ sim.actionText }}</button>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <p>Interactive simulations for this subtopic will be available soon.</p>
+                }
+              </div>
+            }
+
+            <!-- TAB 4: PRACTICE PYQS WITH INSTANT FEEDBACK -->
+            @if (activeTab() === 'pyqs') {
+              <div class="pyqs-tab">
+                @if (selectedSubtopic()?.pyqs?.length) {
+                  @for (pyq of selectedSubtopic()?.pyqs; track pyq.id) {
+                    <div class="pyq-card">
+                      <div class="pyq-header">
+                        <span class="pyq-badge">{{ pyq.year }}</span>
+                        <span>Question {{ pyq.id }}</span>
+                      </div>
+                      <p class="question-text">{{ pyq.question }}</p>
+
+                      <div class="options-list">
+                        @for (option of pyq.options; track $index) {
+                          <button 
+                            class="option-btn"
+                            [class.selected]="pyq.userSelectedIndex === $index"
+                            [class.correct]="pyq.userSelectedIndex !== undefined && $index === pyq.correctOptionIndex"
+                            [class.wrong]="pyq.userSelectedIndex === $index && $index !== pyq.correctOptionIndex"
+                            (click)="selectOption(pyq, $index)">
+                            <span class="opt-key">{{ getOptionLabel($index) }}</span>
+                            <span>{{ option }}</span>
+                          </button>
+                        }
+                      </div>
+
+                      <!-- Instant Solution Feedback -->
+                      @if (pyq.userSelectedIndex !== undefined) {
+                        <div class="explanation-box" [class.success]="pyq.userSelectedIndex === pyq.correctOptionIndex">
+                          <strong>{{ pyq.userSelectedIndex === pyq.correctOptionIndex ? '✅ Correct Answer!' : '❌ Incorrect' }}</strong>
+                          <p>{{ pyq.explanation }}</p>
+                        </div>
+                      }
+                    </div>
+                  }
+                } @else {
+                  <p>No practice questions added for this subtopic yet.</p>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
   }
 </div>

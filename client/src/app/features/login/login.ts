@@ -1,7 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../../core/services/toast.service';
@@ -17,6 +17,7 @@ export class LoginComponent {
   private toastService = inject(ToastService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   activeTab = signal<'login' | 'register'>('login');
   
@@ -74,12 +75,23 @@ export class LoginComponent {
       email: this.loginData.email.trim(),
       password: this.loginData.password
     }).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.isLoading.set(false);
-        if (res.success) {
-          // Navigate to publications/dashboard upon successful authentication
+        
+        // 1. Ensure token is saved in localStorage (handles both res.token and res.accessToken)
+        const token = res?.token || res?.accessToken;
+        if (token) {
+          localStorage.setItem('jwt_token', token);
+        }
+
+        if (res?.success || token) {
           this.toastService.success('Login successful! Welcome back.');
-          this.router.navigate(['/publications']);
+          
+          // 2. Read returnUrl if redirected by AuthGuard, or default to /portal
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/portal';
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          this.errorMessage.set('Login failed. Invalid response structure from server.');
         }
       },
       error: (err: unknown) => {
@@ -112,7 +124,6 @@ export class LoginComponent {
 
     this.isLoading.set(true);
 
-    // Map UI role selection to Express PostgreSQL Enum ('Student' | 'Faculty')
     const mappedRole = this.registerData.role === 'FACULTY' ? 'Faculty' : 'Student';
 
     this.authService.register({
@@ -124,8 +135,6 @@ export class LoginComponent {
         this.isLoading.set(false);
         if (res.success) {
           this.successMessage.set('Account created successfully! Switching to login...');
-          
-          // Populate login email and switch tab automatically
           this.loginData.email = this.registerData.email;
           
           setTimeout(() => {

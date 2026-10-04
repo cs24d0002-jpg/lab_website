@@ -19,12 +19,13 @@ import { routes } from './app.routes';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { spinnerInterceptor } from './core/interceptors/spinner.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { encryptionInterceptor } from './core/interceptors/encryption.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtInterceptor, spinnerInterceptor, errorInterceptor]))
+    provideHttpClient(withInterceptors([jwtInterceptor, spinnerInterceptor, errorInterceptor, encryptionInterceptor]))
   ]
 };

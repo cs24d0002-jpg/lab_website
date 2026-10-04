@@ -2,6 +2,9 @@ import { Routes } from '@angular/router';
 import { PublicShowcaseComponent } from './features/public-showcase/public-showcase';
 import { GatePrepComponent } from './features/gate-prep/gate-prep';
 import { LoginComponent } from './features/login/login';
+import { PortalComponent } from './portal/portal';
+import { authGuard } from './core/guards/auth-guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -25,6 +28,15 @@ export const routes: Routes = [
   {
     path: 'publications',
     loadComponent: () => import('./features/publications/publications').then(m => m.PublicationsComponent)
+  },
+  {
+    path: 'portal',
+    component: PortalComponent,
+    canActivate: [authGuard],
+    children: [
+      // Add sub-modules like dashboard, inventory, gate-prep here
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   },
   {
     path: '**',
