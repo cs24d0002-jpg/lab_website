@@ -1,81 +1,135 @@
-<div class="erp-layout">
-  <!-- Sidebar Navigation -->
-  <aside class="erp-sidebar">
-    <div class="sidebar-brand">
-      <span class="brand-logo">⚡</span>
-      <span class="brand-text">Enterprise ERP</span>
+<div class="erp-container">
+  <!-- Left Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo">⚡</span>
+      <span class="title">Enterprise Portal</span>
     </div>
 
-    <nav class="sidebar-menu">
-      @for (module of modules; track module.id) {
+    <nav class="nav-menu">
+      @for (module of sidebarModules; track module.id) {
         <button 
-          class="menu-item" 
+          class="nav-item" 
           [class.active]="activeModule() === module.id"
-          (click)="selectModule(module.id)">
-          <span class="menu-icon">{{ module.icon }}</span>
-          <span class="menu-label">{{ module.name }}</span>
+          (click)="selectSidebarModule(module.id)">
+          <span class="icon">{{ module.icon }}</span>
+          <span class="label">{{ module.name }}</span>
         </button>
       }
     </nav>
 
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">
-        <span>🚪</span>
-        <span>Sign Out</span>
+        <span>🚪</span> Sign Out
       </button>
     </div>
   </aside>
 
-  <!-- Main Portal Content Wrapper -->
-  <div class="erp-main">
-    <!-- ERP Top Action Bar -->
-    <header class="erp-topbar">
-      <div class="topbar-search">
-        <input type="text" placeholder="Search modules, records, or entities..." />
+  <!-- Main Viewport Area -->
+  <div class="main-viewport">
+    <header class="topbar">
+      <div class="search-box">
+        <input type="text" placeholder="Search Portal..." />
       </div>
 
-      <div class="topbar-actions">
-        <span class="notification-badge">🔔</span>
-        <div class="user-profile">
-          <div class="avatar">{{ user().name[0] }}</div>
-          <div class="user-info">
-            <span class="user-name">{{ user().name }}</span>
-            <span class="user-role">{{ user().role }}</span>
-          </div>
+      <div class="user-badge">
+        <div class="avatar">{{ user().name[0] }}</div>
+        <div class="user-details">
+          <span class="name">{{ user().name }}</span>
+          <span class="role">{{ user().role }}</span>
         </div>
       </div>
     </header>
 
-    <!-- Dynamic Workspace Container -->
-    <main class="erp-workspace">
+    <main class="content-body">
+      <!-- DASHBOARD TAB -->
       @if (activeModule() === 'dashboard') {
-        <div class="workspace-card">
-          <h2>Overview & Metrics</h2>
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <span class="metric-title">Active Users</span>
-              <span class="metric-value">1,248</span>
+        <div class="content-card">
+          <h2>ERP Dashboard</h2>
+          <p>System metrics and live operational data.</p>
+        </div>
+      }
+
+      <!-- MANAGEMENT HUB TAB -->
+      @if (activeModule() === 'management') {
+        <!-- Sub-View 1: Tile Grid (When no sub-module is selected) -->
+        @if (activeManagementSubModule() === null) {
+          <div class="hub-container">
+            <div class="hub-header">
+              <h2>Data Management Hub</h2>
+              <p>Select a module to manage lab assets, staff, and academic records.</p>
             </div>
-            <div class="metric-card">
-              <span class="metric-title">System Health</span>
-              <span class="metric-value status-good">99.9%</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-title">Encrypted Sessions</span>
-              <span class="metric-value">Active</span>
+
+            <div class="tiles-grid">
+              @for (tile of managementTiles; track tile.id) {
+                <div class="tile-card" (click)="openManagementSubModule(tile.id)">
+                  <div class="tile-icon-wrapper">
+                    <span class="tile-icon">{{ tile.icon }}</span>
+                  </div>
+                  <div class="tile-content">
+                    <h3>{{ tile.title }}</h3>
+                    <p>{{ tile.description }}</p>
+                  </div>
+                  <div class="tile-arrow">➔</div>
+                </div>
+              }
             </div>
           </div>
-        </div>
+        }
+
+        <!-- Sub-View 2: Active Management Module (With Breadcrumb back button) -->
+        @if (activeManagementSubModule() !== null) {
+          <div class="sub-module-view">
+            <div class="breadcrumb-bar">
+              <button class="back-btn" (click)="backToManagementHub()">
+                ← Back to Management Hub
+              </button>
+            </div>
+
+            <div class="sub-module-content">
+              @if (activeManagementSubModule() === 'faculties') {
+                <app-faculty-admin></app-faculty-admin>
+              }
+
+              @if (activeManagementSubModule() === 'members') {
+                <app-member-admin></app-member-admin>
+              }
+
+              @if (activeManagementSubModule() === 'courses') {
+                <div class="placeholder-card">
+                  <h2>📚 Course Management</h2>
+                  <p>Course administration interface.</p>
+                </div>
+              }
+
+              @if (activeManagementSubModule() === 'projects') {
+                <div class="placeholder-card">
+                  <h2>🚀 Research Projects Management</h2>
+                  <p>Project tracking interface.</p>
+                </div>
+              }
+
+              @if (activeManagementSubModule() === 'publications') {
+                <div class="placeholder-card">
+                  <h2>📄 Publications Catalog</h2>
+                  <p>Publication cataloging interface.</p>
+                </div>
+              }
+            </div>
+          </div>
+        }
       }
 
+      <!-- OTHER TABS -->
       @if (activeModule() === 'gate-prep') {
-        <div class="workspace-card">
-          <h2>GATE CS & IT Module Workspace</h2>
-          <p>Integrated study environment for all 10 GATE subjects.</p>
+        <div class="content-card">
+          <h2>GATE Preparation</h2>
         </div>
       }
+      @if (activeModule() === 'task-tracker') {
+        <app-student-tracker></app-student-tracker>
+      }
 
-      <!-- Nested child routes can render here if using router-outlet -->
       <router-outlet></router-outlet>
     </main>
   </div>

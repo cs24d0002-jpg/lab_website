@@ -1,200 +1,105 @@
-:root {
-  --primary: #0284c7;
-  --primary-dark: #0369a1;
-  --secondary: #0f172a;
-  --bg-light: #f8fafc;
-  --border: #e2e8f0;
-}
-
 .faculties-page {
-  background-color: #f8fafc;
-  min-height: calc(100vh - 70px);
-}
-
-.container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 2rem 1rem;
 }
 
-/* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #ffffff;
-  padding: 4rem 0 3.5rem;
   text-align: center;
-}
-
-.badge {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #38bdf8;
-  padding: 0.35rem 0.9rem;
-  border-radius: 50px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  color: #0f172a;
 }
 
 .page-header p {
-  color: #94a3b8;
+  color: #64748b;
   font-size: 1.1rem;
-  max-width: 650px;
-  margin: 0 auto;
 }
 
-.section {
-  padding: 4rem 1.5rem;
-}
-
-/* Faculty Cards Grid */
 .faculty-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .faculty-card {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .faculty-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* Card Header */
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border);
+.card-avatar {
+  margin-bottom: 1rem;
 }
 
-.avatar-wrapper {
-  width: 76px;
-  height: 76px;
+.card-avatar img {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #e0f2fe;
-  flex-shrink: 0;
-  background-color: #f1f5f9;
-}
-
-.faculty-avatar {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 
-.header-details h2 {
-  font-size: 1.25rem;
+.avatar-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--secondary);
-  margin: 0 0 0.2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  color: #0f172a;
 }
 
 .designation {
   display: block;
-  font-size: 0.88rem;
   font-weight: 600;
   color: #0284c7;
-  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.department {
+  display: block;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+}
+
+.research {
+  font-size: 0.85rem;
+  color: #334155;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .email-link {
-  font-size: 0.8rem;
-  color: #64748b;
+  color: #0284c7;
   text-decoration: none;
-  transition: color 0.2s;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .email-link:hover {
-  color: #0284c7;
-}
-
-/* Card Body */
-.card-body {
-  padding: 1.5rem 0;
-  flex-grow: 1;
-}
-
-.bio {
-  color: #475569;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-}
-
-.interests-section h4 {
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #64748b;
-  margin-bottom: 0.6rem;
-}
-
-.tag-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.interest-tag {
-  background-color: #f1f5f9;
-  color: #334155;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.3rem 0.65rem;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
-}
-
-/* Card Footer */
-.card-footer {
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-}
-
-.profile-btn {
-  display: block;
-  text-align: center;
-  width: 100%;
-  padding: 0.65rem;
-  background-color: #f0f9ff;
-  color: #0284c7;
-  border: 1px solid #bae6fd;
-  border-radius: 6px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.profile-btn:hover {
-  background-color: #0284c7;
-  color: #ffffff;
-}
-
-@media (max-width: 640px) {
-  .card-header {
-    flex-direction: column;
-    text-align: center;
-  }
+  text-decoration: underline;
 }

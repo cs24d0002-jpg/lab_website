@@ -8,10 +8,10 @@ import { Faculty, PublicLabService } from '../../core/services/public-lab';
   styleUrl: './public-showcase.css'
 })
 export class PublicShowcaseComponent implements OnInit {
-  private labService = inject(PublicLabService);
-  facultyList = signal<Faculty[]>([]);
+  // private labService = inject(PublicLabService);
+  // facultyList = signal<Faculty[]>([]);
 
   ngOnInit() {
-    this.labService.getFaculty().subscribe((data) => this.facultyList.set(data));
+    // this.labService.getFaculty().subscribe((data) => this.facultyList.set(data));
   }
 }

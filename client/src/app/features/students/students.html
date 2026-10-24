@@ -9,68 +9,78 @@
   </header>
 
   <main class="container section">
-    <!-- Filter Tabs & Stats -->
+    <!-- Dynamic Filter Tabs with Live Backend Counts -->
     <div class="filter-bar">
       <div class="tabs">
         <button 
           [class.active]="activeCategory() === 'All'" 
           (click)="setCategory('All')">
-          All (21)
+          All ({{ allCount() }})
         </button>
         <button 
           [class.active]="activeCategory() === 'PhD'" 
           (click)="setCategory('PhD')">
-          PhD Scholars (9)
+          PhD Scholars ({{ phdCount() }})
         </button>
         <button 
           [class.active]="activeCategory() === 'M.Tech'" 
           (click)="setCategory('M.Tech')">
-          M.Tech (2)
+          M.Tech ({{ mtechCount() }})
         </button>
         <button 
           [class.active]="activeCategory() === 'B.Tech'" 
           (click)="setCategory('B.Tech')">
-          B.Tech Projects (10)
+          B.Tech Projects ({{ btechCount() }})
         </button>
       </div>
     </div>
 
     <!-- Students Grid -->
-    <div class="students-grid">
-      @for (student of filteredStudents(); track student.id) {
-        <div class="student-card">
-          <div class="card-top">
-            <div class="avatar-circle">
-              {{ student.name.substring(0, 1) }}
+    @if (isLoading()) {
+      <div style="text-align: center; padding: 3rem; color: #64748b;">
+        <p>Loading members from server...</p>
+      </div>
+    } @else {
+      <div class="students-grid">
+        @for (student of filteredStudents(); track student.id) {
+          <div class="student-card">
+            <div class="card-top">
+              <div class="avatar-circle">
+                {{ student.name.substring(0, 1) }}
+              </div>
+              <div class="student-info">
+                <span class="degree-badge" [ngClass]="student.degree.toLowerCase().replace('.', '')">
+                  {{ student.degree }}
+                </span>
+                <h3>{{ student.name }}</h3>
+                <span class="roll-number">{{ student.rollNumber }} • {{ student.year }}</span>
+              </div>
             </div>
-            <div class="student-info">
-              <span class="degree-badge" [ngClass]="student.degree.toLowerCase().replace('.', '')">
-                {{ student.degree }}
-              </span>
-              <h3>{{ student.name }}</h3>
-              <span class="roll-number">{{ student.rollNumber }} • {{ student.year }}</span>
+
+            <div class="card-body">
+              <div class="info-group">
+                <span class="label">Research / Project Topic:</span>
+                <p class="topic">{{ student.researchTopic }}</p>
+              </div>
+
+              <div class="info-group">
+                <span class="label">Advisor / Mentors:</span>
+                <p class="advisor">{{ student.advisor }}</p>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <a [href]="'mailto:' + student.email" class="contact-link">
+                ✉️ {{ student.email }}
+              </a>
             </div>
           </div>
-
-          <div class="card-body">
-            <div class="info-group">
-              <span class="label">Research / Project Topic:</span>
-              <p class="topic">{{ student.researchTopic }}</p>
-            </div>
-
-            <div class="info-group">
-              <span class="label">Advisor / Mentors:</span>
-              <p class="advisor">{{ student.advisor }}</p>
-            </div>
+        } @empty {
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #64748b;">
+            <p>No members found in this category.</p>
           </div>
-
-          <div class="card-footer">
-            <a [href]="'mailto:' + student.email" class="contact-link">
-              ✉️ {{ student.email }}
-            </a>
-          </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   </main>
 </div>

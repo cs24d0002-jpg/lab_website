@@ -1,4 +1,4 @@
-<div class="faculties-page">
+<!-- <div class="faculties-page">
   <header class="page-header">
     <div class="container">
       <span class="badge">TADS Lab Leadership</span>
@@ -18,7 +18,7 @@
                 [alt]="faculty.name" 
                 class="faculty-avatar"
                 (error)="handleImageError($event)" />
-            </div> -->
+            </div>
             <div class="header-details">
               <h2>{{ faculty.name }}</h2>
               <span class="designation">{{ faculty.designation }}</span>
@@ -54,4 +54,53 @@
       }
     </div>
   </main>
-</div>
+</div> -->
+
+<section class="faculties-page">
+  <div class="page-header">
+    <h1>Our Faculty Members</h1>
+    <p>Meet the distinguished professors and researchers driving innovation at TADS Lab.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-spinner">
+      <p>Loading faculty records...</p>
+    </div>
+  } @else {
+    <div class="faculty-grid">
+      @for (faculty of faculties(); track faculty.id) {
+        <div class="faculty-card">
+          <div class="card-avatar">
+            @if (faculty.image_url) {
+              <img [src]="faculty.image_url" [alt]="faculty.name" />
+            } @else {
+              <div class="avatar-placeholder">
+                {{ faculty.name[0] }}
+              </div>
+            }
+          </div>
+
+          <div class="card-content">
+            <h3>{{ faculty.name }}</h3>
+            <span class="designation">{{ faculty.designation }}</span>
+            <span class="department">{{ faculty.department }}</span>
+
+            @if (faculty.research_area) {
+              <p class="research">
+                <strong>Research Focus:</strong> {{ faculty.research_area }}
+              </p>
+            }
+
+            <a [href]="'mailto:' + faculty.email" class="email-link">
+              ✉️ {{ faculty.email }}
+            </a>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>No faculty details available at the moment.</p>
+        </div>
+      }
+    </div>
+  }
+</section>

@@ -1,3 +1,4 @@
+--psql -U postgres -h localhost -d postgres
 CREATE DATABASE IF NOT EXISTS tads_lab_website;
 
 -- Enforce Enum Types for Roles & Material Categories
@@ -15,16 +16,15 @@ CREATE TABLE users (
 );
 
 -- 2. FACULTIES TABLE (Lab Faculty Details)
-CREATE TABLE faculties (
-    id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL,
-    designation VARCHAR(255) NOT NULL,
-    room_no VARCHAR(50) DEFAULT 'Room L610',
-    profile_url VARCHAR(255),
-    bio TEXT,
-    avatar_url VARCHAR(255),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS faculties (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  designation VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  department VARCHAR(150) NOT NULL,
+  research_area TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 3. PUBLICATIONS TABLE (Conferences, Journals, Patents)
@@ -77,6 +77,18 @@ CREATE TABLE gate_questions (
     options JSONB, -- Stores array of string options e.g. ["Opt A", "Opt B"]
     correct_answer VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+--7. STUDENTS TABLE (Lab Members & Scholars)
+CREATE TABLE IF NOT EXISTS members (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  role VARCHAR(100) NOT NULL, -- e.g., 'Ph.D. Scholar', 'M.Tech Student', 'Project Staff'
+  email VARCHAR(255) UNIQUE NOT NULL,
+  degree VARCHAR(100) NOT NULL,
+  research_topic TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Performance Indexes

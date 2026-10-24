@@ -1,0 +1,107 @@
+<div class="faculty-admin-container">
+  <div class="module-header">
+    <div>
+      <h2>Faculty Management</h2>
+      <p>Add, edit, or remove lab and department faculty members.</p>
+    </div>
+    <button class="add-btn" (click)="openAddModal()">
+      <span>➕</span> Add New Faculty
+    </button>
+  </div>
+
+  <!-- Faculty Data Table -->
+  <div class="table-card">
+    @if (isLoading()) {
+      <div class="loading-state">Loading faculty records...</div>
+    } @else {
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Faculty</th>
+            <th>Designation</th>
+            <th>Department</th>
+            <th>Research Area</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of faculties(); track item.id) {
+            <tr>
+              <td class="user-cell">
+                <div class="avatar">{{ item.name[0] }}</div>
+                <div class="user-details">
+                  <span class="name">{{ item.name }}</span>
+                  <span class="email">{{ item.email }}</span>
+                </div>
+              </td>
+              <td>{{ item.designation }}</td>
+              <td>{{ item.department }}</td>
+              <td>{{ item.researchArea || 'N/A' }}</td>
+              <td class="actions-cell">
+                <button class="action-btn edit" (click)="openEditModal(item)">✏️ Edit</button>
+                <button class="action-btn delete" (click)="deleteFaculty(item.id)">🗑️ Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-state">No faculty members found. Click "Add New Faculty" to create one.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  <!-- Modal Overlay for Create/Edit -->
+  @if (isModalOpen()) {
+    <div class="modal-backdrop" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ isEditing() ? 'Edit Faculty' : 'Add New Faculty' }}</h3>
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" [(ngModel)]="currentFaculty.name" placeholder="Dr. Jane Doe" />
+          </div>
+
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" [(ngModel)]="currentFaculty.email" placeholder="janedoe@iiitdm.ac.in" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Designation</label>
+              <select [(ngModel)]="currentFaculty.designation">
+                <option value="Professor">Professor</option>
+                <option value="Associate Professor">Associate Professor</option>
+                <option value="Assistant Professor">Assistant Professor</option>
+                <option value="Adjunct Faculty">Adjunct Faculty</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" [(ngModel)]="currentFaculty.department" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Research Area / Interests</label>
+            <input type="text" [(ngModel)]="currentFaculty.researchArea" placeholder="e.g., Cryptography, Algorithms" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+          <button class="btn-primary" (click)="saveFaculty()">
+            {{ isEditing() ? 'Update Faculty' : 'Save Faculty' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
